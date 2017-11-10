@@ -1,6 +1,10 @@
 package lexer
 
 
+import (
+    "github.com/gipx/token"
+)
+
 type Lexer struct {
 
   input        string
@@ -54,12 +58,12 @@ func (l *Lexer) NextToken() token.Token {
     tok.Literal = ""
     tok.Type = token.EOF
   }
-  l.readChar()
 
+  l.readChar()
   return tok
 }
 
-func newToken(tokenType token.TokenType, ch byte) {
+func newToken(tokenType token.TokenType, ch byte) token.Token {
 
   return token.Token{Type: tokenType, Literal: string(ch)}
 }
