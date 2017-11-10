@@ -3,14 +3,14 @@ package lexer
 
 import (
   "testing"
-  "gipx/token"
+  "github.com/gipx/token"
 )
 
 func TestNextToken(t *testing.T){
 
   input := `=+(){},;`
 
-  test :=[]struct{
+  tests :=[]struct{
     expectedType token.TokenType
     expectedLiteral string
   }{

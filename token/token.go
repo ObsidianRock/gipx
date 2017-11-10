@@ -1,7 +1,7 @@
 package token
 
 
-type TokenType string#
+type TokenType string
 
 type Token struct {
 
@@ -31,7 +31,7 @@ const (
   LBRACE = "{"
   RBRACE = "}"
 
-  // keywords 
+  // keywords
   FUNCTION = "FUNCTION"
   LET = "LET"
 )
