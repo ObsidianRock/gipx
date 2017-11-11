@@ -25,7 +25,7 @@ func TestLetStatements(t *testing.T){
     t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(program.Statements))
   }
 
-  tests := []structs{
+  tests := []struct{
     expectedIdentifier string
   }{
     {"x"},
@@ -33,7 +33,7 @@ func TestLetStatements(t *testing.T){
     {"foo"},
   }
 
-  for i, tt := tests {
+  for i, tt := range tests {
     stmt := program.Statements[i]
     if !testletStatement(t, stmt, tt.expectedIdentifier){
       return

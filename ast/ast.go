@@ -26,13 +26,13 @@ type Program struct {
 
 // satisfy the Statement and Node interfaces respectively
 type LetStatement struct {
-  Token token.LET
+  Token token.Token
   Name *Identifier
   Value Expression
 }
 
 func (ls *LetStatement) statementNode() {}
-func (ls *LetStatement) TokenLiteral() { return ls.Token.Literal }
+func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
 
 
 // implements the Expression interface.
@@ -42,7 +42,7 @@ type Identifier struct {
 }
 
 func (i *Identifier) expressionNode() {}
-func (i *Identifier) TokenLiteral() { return i.Token.Literal }
+func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
 
 
 func (p *Program) TokenLiteral() string{
