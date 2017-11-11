@@ -1,5 +1,9 @@
 package ast
 
+import (
+  "github.com/gipx/token"
+)
+
 
 type Node interface {
   TokenLiteral() string
@@ -19,6 +23,26 @@ type Expression interface {
 type Program struct {
   Statements []Statement
 }
+
+// satisfy the Statement and Node interfaces respectively
+type LetStatement struct {
+  Token token.LET
+  Name *Identifier
+  Value Expression
+}
+
+func (ls *LetStatement) statementNode() {}
+func (ls *LetStatement) TokenLiteral() { return ls.Token.Literal }
+
+
+// implements the Expression interface.
+type Identifier struct {
+  Token token.Token
+  Value string
+}
+
+func (i *Identifier) expressionNode() {}
+func (i *Identifier) TokenLiteral() { return i.Token.Literal }
 
 
 func (p *Program) TokenLiteral() string{
