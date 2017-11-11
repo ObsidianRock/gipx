@@ -10,7 +10,7 @@ type Parser struct {
 
   l *lexer.Lexer
 
-  currToken token.Token
+  curToken token.Token
   peekToken token.Token
 }
 
@@ -27,10 +27,31 @@ func New(l *lexer.Lexer) *Parser {
 
 func (p *Parser) NextToken() {
 
-  p.currToken = p.peekToken
+  p.curToken = p.peekToken
   p.peekToken = p.l.NextToken()
 }
 
 func (p *Parser) ParseProgram() *ast.Program {
-  return nil 
+  program := &ast.Program{}
+
+  program.Statements = []ast.Statement{}
+
+  for p.curToken.Type != token.EOF {
+    stmt := p.parseStatement()
+    if stmt != nil {
+      program.Statements = append(program.Statements, stmt)
+    }
+    p.NextToken()
+  }
+
+  return program
+}
+
+func (p *Parser) ParseStatement() ast.Statement {
+  switch p.curToken.Type {
+  case token.LET:
+    return p.parseLetStatement()
+  default:
+    return nil
+  }
 }
