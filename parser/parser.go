@@ -116,10 +116,10 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 
   p.nextToken()
 
-  if !p.curTokenIs(token.SEMICOLN){
+  if !p.curTokenIs(token.SEMICOLON){
     p.nextToken()
   }
 
-  return stmt 
+  return stmt
 
 }

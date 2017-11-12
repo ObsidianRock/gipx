@@ -8,8 +8,8 @@ import (
 
 func TestLetStatements(t *testing.T){
 
-  input :=`let x * 5;
-  let 5 = 10;
+  input :=`let x = 5;
+  let c = 10;
   let foo = 99999;`
 
   l := lexer.New(input)
@@ -31,7 +31,7 @@ func TestLetStatements(t *testing.T){
     expectedIdentifier string
   }{
     {"x"},
-    {"y"},
+    {"c"},
     {"foo"},
   }
 
@@ -87,7 +87,7 @@ func TestReturnStatement(t *testing.T) {
 
   input := `return 5;
             return 10;
-            return 655`
+            return 655;`
 
   l := lexer.New(input)
   p := New(l)
