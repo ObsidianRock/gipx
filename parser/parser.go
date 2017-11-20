@@ -165,3 +165,16 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatment {
 
   return stmt
 }
+
+
+func (p *Parser) parseExpression(presedence int) *ast.Expression {
+
+  prefix := p.prefixParserFns[p.curToken.Type]
+  if prefix == nil {
+    return nil
+  }
+
+  leftExp := prefix()
+
+  return leftExp
+}
