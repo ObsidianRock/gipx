@@ -35,17 +35,15 @@ type (
   infixParseFn func(ast.Expression) ast.Expression
 )
 
-
 func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
   p.prefixParseFns[tokenType] = fn
 }
+
 func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
   p.infixParseFns[tokenType] = fn
 }
 
-
 func New(l *lexer.Lexer) *Parser {
-
   p := &Parser{
      l: l,
      errors: []string{},
@@ -54,6 +52,9 @@ func New(l *lexer.Lexer) *Parser {
   // Read two tokens, so curToken and peekToken are both set
   p.nextToken()
   p.nextToken()
+
+  p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+  p.registerPrefix(token.IDENT, p.parseIdentifier)
 
   return p
 }
@@ -87,7 +88,7 @@ func (p *Parser) parseStatement() ast.Statement {
   case token.RETURN:
     return p.parseReturnStatement()
   default:
-    return p.ParseExpressionStatement()
+    return p.parseExpressionStatement()
   }
 }
 
@@ -150,13 +151,13 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
   }
 
   return stmt
-
 }
 
 
-func (p *Parser) parseExpressionStatement() *ast.ExpressionStatment {
+func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 
-  stmt := *ast.ExpressionStatment{Token: p.curToken}
+  stmt := &ast.ExpressionStatement{Token: p.curToken}
+
   stmt.Expression = p.parseExpression(LOWEST)
 
   if p.peekTokenIs(token.SEMICOLON){
@@ -167,9 +168,9 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatment {
 }
 
 
-func (p *Parser) parseExpression(presedence int) *ast.Expression {
+func (p *Parser) parseExpression(presedence int) ast.Expression {
 
-  prefix := p.prefixParserFns[p.curToken.Type]
+  prefix := p.prefixParseFns[p.curToken.Type]
   if prefix == nil {
     return nil
   }
@@ -177,4 +178,8 @@ func (p *Parser) parseExpression(presedence int) *ast.Expression {
   leftExp := prefix()
 
   return leftExp
+}
+
+func (p *Parser) parseIdentifier() ast.Expression {
+  return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
